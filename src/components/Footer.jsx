@@ -1,83 +1,83 @@
-import {useState} from "react";
+import { useState } from "react";
 import RegisterForm from "./RegisterForm.jsx";
-import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
-import {faPhone, faEnvelope, faGlobe, faLocationDot} from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import {
+  faPhone,
+  faEnvelope,
+  faGlobe,
+  faLocationDot,
+} from "@fortawesome/free-solid-svg-icons";
 
 export default function Footer() {
-    const [open, setOpen] = useState(false);
+  const [open, setOpen] = useState(false);
 
-    function handleOpen(event) {
-        event.preventDefault(); // Prevent the form from submitting and refreshing the page
-        setOpen(true);
-    }
+  function openModal() {
+    setOpen(true);
+  }
 
-    function closePopUp() {
-        setOpen(false);
-    }
+  function closeModal() {
+    setOpen(false);
+  }
 
-    return (
-        <div className="relative bg-footer-bg bg-cover w-full z-50">
-            <div className="relative flex flex-col items-center text-white pt-36 w-full ">
-                <div className="md:py-5 pb-10 tracking-widest font-extralight text-2xl md:text-3xl  text-center">
-                    <h1>ПРИДРУЖИ СЕ НА НАШАТА ПЛАТФОРМА СЕГА</h1>
-                </div>
-                <form action="/" className="relative w-[30%]  border-2 border-stone-200 rounded-full">
-                    <div className="relative">
-                        <input
-                            type="text"
-                            id="fname"
-                            name="fname"
-                            className="w-full border-2 border-homeBlue rounded-full py-2 pr-12 pl-4 focus:outline-none text-black"
-                            placeholder="Твојата емаил адреса..."
-                        />
-                        <button
-                            type="submit"
-                            formAction="/"
-                            className="absolute inset-y-0 right-0 px-4 text-white bg-customBlue rounded-full hover:bg-blue-950 "
-                            onClick={handleOpen}
-                        >
-                            Регистрирај се
-                        </button>
-                    </div>
-                </form>
-                <div className="flex flex-row space-x-8 pb-5 pt-7">
-                    <a href="/">
-                        <div className="bg-customBlue p-2 rounded-full border-2 border-white">
-                            <FontAwesomeIcon icon={faPhone} className="w-7 h-6"/>
-                        </div>
-                    </a>
-                    <a href="/">
-                        <div className="bg-customBlue p-2 rounded-full border-2 border-white">
-                            <FontAwesomeIcon icon={faEnvelope} className="w-7 h-6"/>
-                        </div>
-                    </a>
-                    <a href="/">
-                        <div className="bg-customBlue p-2 rounded-full border-2 border-white">
-                            <FontAwesomeIcon icon={faGlobe} className="w-7 h-6"/>
-                        </div>
-                    </a>
-                    <a href="/">
-                        <div className="bg-customBlue p-2 rounded-full border-2 border-white">
-                            <FontAwesomeIcon icon={faLocationDot} className="w-7 h-6"/>
-                        </div>
-                    </a>
-                </div>
-                <p className="text-sm">© 2025 Мој Доктор™ | Аll rights reserved | www.mojdoktor.mk </p>
-            </div>
+  return (
+    <footer className="w-full backdrop-blur-md bg-white/60 border-t border-cardBorder mt-20">
+      <div className="max-w-screen-xl mx-auto px-4 md:px-6 lg:px-8 py-16 flex flex-col items-center text-center">
+        {/* Title */}
+        <h2 className="text-2xl md:text-3xl font-bold text-textPrimary">
+          Придружи се на нашата платформа
+        </h2>
+        <p className="text-textSecondary mt-2 text-sm md:text-base">
+          Внеси ја твојата емаил адреса и добивај новости од нашиот тим.
+        </p>
 
-            {/** Pop-up Overlay **/}
-            {open && (
-                <div
-                    className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 backdrop-blur-sm z-50">
-                    <div className="relative bg-formbg rounded-xl shadow-lg p-5 w-[500px]">
-                        <button onClick={closePopUp}
-                                className="absolute top-3 right-3 bg-stone-200 text-black rounded-full w-8 h-8">
-                            ✕
-                        </button>
-                        <RegisterForm/>
-                    </div>
-                </div>
-            )}
+        {/* Email Input */}
+        <div className="mt-8 w-full max-w-md flex items-center bg-white/80 border border-cardBorder rounded-full shadow-sm overflow-hidden backdrop-blur-sm">
+          <input
+            type="email"
+            placeholder="Твојата емаил адреса..."
+            className="flex-1 px-4 py-2 bg-transparent text-textPrimary focus:outline-none"
+          />
+          <button
+            onClick={openModal}
+            className="px-6 py-2 bg-btnPrimary text-white font-semibold rounded-full hover:bg-btnPrimaryHover transition"
+          >
+            Регистрирај се
+          </button>
         </div>
-    )
+
+        {/* Social Icons */}
+        <div className="flex gap-6 mt-10">
+          {[faPhone, faEnvelope, faGlobe, faLocationDot].map((icon, i) => (
+            <a
+              href="/"
+              key={i}
+              className="bg-btnPrimary/60 backdrop-blur-sm p-3 rounded-full hover:bg-btnPrimaryHover transition border border-white/30 shadow-md"
+            >
+              <FontAwesomeIcon icon={icon} className="text-white w-6 h-5" />
+            </a>
+          ))}
+        </div>
+
+        {/* Copyright */}
+        <p className="text-sm text-textSecondary mt-8">
+          © 2025 Мој Доктор™ | All rights reserved | www.mojdoktor.mk
+        </p>
+      </div>
+
+      {/* Modal */}
+      {open && (
+        <div className="fixed inset-0 flex items-center justify-center bg-black/50 backdrop-blur-sm z-50">
+          <div className="relative bg-formBg rounded-xl shadow-lg p-5 w-[500px] max-w-[90%]">
+            <button
+              onClick={closeModal}
+              className="absolute top-3 right-3 bg-stone-200 text-black rounded-full w-8 h-8"
+            >
+              ✕
+            </button>
+            <RegisterForm />
+          </div>
+        </div>
+      )}
+    </footer>
+  );
 }

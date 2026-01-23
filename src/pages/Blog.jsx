@@ -1,7 +1,13 @@
-export default function Blog(){
-    return(
-        <div>
+import AddBlogPost from "../components/blog/AddBlogPost";
+import BlogHero from "../components/blog/BlogHero";
+import BlogPosts from "../components/blog/BlogPosts";
 
-        </div>
-    );
+export default function Blog() {
+  return (
+    <div>
+      <BlogHero />
+      <AddBlogPost />
+      <BlogPosts />
+    </div>
+  );
 }
