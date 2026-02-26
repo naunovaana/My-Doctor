@@ -9,31 +9,11 @@ export default function AboutUs() {
       className="max-w-screen-xl mx-auto px-4 md:px-6 lg:px-8 py-20"
     >
       <div className="flex flex-row space-x-6">
-        <div className="grid grid-cols-2 w-[40%] shadow-md">
-          <div className="">
-            <img
-              src="/src/assets/about_us_photo1.png"
-              className="w-full h-full object-cover"
-            />
-          </div>
-          <div className="">
-            <img
-              src="/src/assets/about_us_photo2.png"
-              className="w-full h-full object-cover"
-            />
-          </div>
-          <div className="">
-            <img
-              src="/src/assets/about_us_photo2.png"
-              className="w-full h-full object-cover"
-            />
-          </div>
-          <div className="">
-            <img
-              src="/src/assets/about_us_photo1.png"
-              className="w-full h-full object-cover"
-            />
-          </div>
+        <div className="flex justify-center aspect-[3/2] w-[50%] border border-cardBorder shadow-md rounded-xl overflow-hidden">
+          <img
+            src="/aboutus_medical2.jpg"
+            className="w-full h-full object-center"
+          />
         </div>
 
         <div className="w-[60%] flex flex-col justify-center text-left space-y-4 px-4">

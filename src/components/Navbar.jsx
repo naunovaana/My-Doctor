@@ -49,9 +49,15 @@ export default function Navbar() {
               </a>
             </li>
           </ul>
+          <Link
+            to="/register"
+            className="ml-6 px-5 py-2 border border-btnPrimary rounded-lg text-btnPrimary font-semibold uppercase hover:bg-btnPrimary hover:text-white transition-colors"
+          >
+            Регистрирај профил
+          </Link>
 
           {/* Search */}
-          <form
+          {/* <form
             action="/"
             className="hidden xl:flex items-center gap-0 w-[25%]"
           >
@@ -67,7 +73,7 @@ export default function Navbar() {
             >
               <FontAwesomeIcon icon={faMagnifyingGlass} />
             </button>
-          </form>
+          </form> */}
         </div>
       </nav>
 

@@ -6,6 +6,9 @@ import Doctors from "./pages/Doctors.jsx";
 import Blog from "./pages/Blog.jsx";
 import AboutUs from "./pages/AboutUs.jsx";
 import DoctorDetails from "./pages/DoctorDetails.jsx";
+import Profile from "./pages/Profile.jsx";
+import Login from "./pages/Login.jsx";
+import Register from "./pages/Register.jsx";
 
 function App() {
   return (
@@ -19,6 +22,9 @@ function App() {
             <Route path="/doctors/:slug" element={<DoctorDetails />} />
             <Route path="/blog" element={<Blog />} />
             <Route path="/about" element={<AboutUs />} />
+            <Route path="/profile" element={<Profile />} />
+            <Route path="/login" element={<Login />} />
+            <Route path="/register" element={<Register />} />
           </Routes>
           <Footer />
         </BrowserRouter>
