@@ -4,7 +4,7 @@ export const doctors = [
     id: 1,
     slug: "dr-saska-ivanova",
     img: "/src/assets/Mask1.png",
-    title: "Др. Сашка Иванова",
+    name: "Др. Сашка Иванова",
     speciality: "Неврологија",
     description: "Специјалист за неврологија со долгогодишно искуство.",
     hospital: "Клиничка болница Скопје",
@@ -18,14 +18,14 @@ export const doctors = [
   },
   {
     img: "/src/assets/Mask1.png",
-    title: "Др. Марина Јовановиќ",
+    name: "Др. Марина Јовановиќ",
     speciality: "Неврологија",
     description: "Специјалист за мозочни и нервни нарушувања",
     location: "Битола",
   },
   {
     img: "/src/assets/Mask1.png",
-    title: "Др. Сара Сребренова",
+    name: "Др. Сара Сребренова",
     speciality: "Неврологија",
     description: "Специјалист за мозочни нарушувања",
     location: "Скопје",
@@ -34,14 +34,14 @@ export const doctors = [
   // ----- ПСИХОЛОГИЈА -----
   {
     img: "/src/assets/Mask2.png",
-    title: "Др. Венцо Јованов",
+    name: "Др. Венцо Јованов",
     speciality: "Психологија",
     description: "Психолог и когнитивно-бихејвиорален терапевт",
     location: "Скопје",
   },
   {
     img: "/src/assets/Mask2.png",
-    title: "Др. Ана Петреска",
+    name: "Др. Ана Петреска",
     speciality: "Психологија",
     description: "Психолог за анксиозност, депресија и стрес",
     location: "Охрид",
@@ -50,14 +50,14 @@ export const doctors = [
   // ----- ХИРУРГИЈА -----
   {
     img: "/src/assets/Mask3.png",
-    title: "Др. Драгица Василева",
+    name: "Др. Драгица Василева",
     speciality: "Хирургија",
     description: "Специјалист за општа и реконструктивна хирургија",
     location: "Скопје",
   },
   {
     img: "/src/assets/Mask3.png",
-    title: "Др. Александар Стојанов",
+    name: "Др. Александар Стојанов",
     speciality: "Хирургија",
     description: "Хирург со насока кон абдоминална хирургија",
     location: "Струмица",
@@ -66,14 +66,14 @@ export const doctors = [
   // ----- КАРДИОЛОГИЈА -----
   {
     img: "/src/assets/Mask1.png",
-    title: "Др. Јелена Спасова",
+    name: "Др. Јелена Спасова",
     speciality: "Кардиологија",
     description: "Специјалист за срцеви заболувања",
     location: "Скопје",
   },
   {
     img: "/src/assets/Mask1.png",
-    title: "Др. Игор Неделков",
+    name: "Др. Игор Неделков",
     speciality: "Кардиологија",
     description: "Кардиолог со фокус на аритмии и хипертензија",
     location: "Куманово",
@@ -82,14 +82,14 @@ export const doctors = [
   // ----- ПЕДИЈАТРИЈА -----
   {
     img: "/src/assets/Mask2.png",
-    title: "Др. Кристина Павлова",
+    name: "Др. Кристина Павлова",
     speciality: "Педијатрија",
     description: "Специјалист за детско здравје и развој",
     location: "Штип",
   },
   {
     img: "/src/assets/Mask2.png",
-    title: "Др. Андреј Костов",
+    name: "Др. Андреј Костов",
     speciality: "Педијатрија",
     description: "Педијатар со насока кон алергологија",
     location: "Скопје",
@@ -98,14 +98,14 @@ export const doctors = [
   // ----- ДЕРМАТОЛОГИЈА -----
   {
     img: "/src/assets/Mask3.png",
-    title: "Др. Марија Трајкова",
+    name: "Др. Марија Трајкова",
     speciality: "Дерматологија",
     description: "Специјалист за кожни заболувања и естетика",
     location: "Прилеп",
   },
   {
     img: "/src/assets/Mask3.png",
-    title: "Др. Лука Георгиев",
+    name: "Др. Лука Георгиев",
     speciality: "Дерматологија",
     description: "Дерматолог со фокус на акни и дерматитис",
     location: "Скопје",
@@ -114,14 +114,14 @@ export const doctors = [
   // ----- ГИНЕКОЛОГИЈА -----
   {
     img: "/src/assets/Mask1.png",
-    title: "Др. Елена Арсова",
+    name: "Др. Елена Арсова",
     speciality: "Гинекологија",
     description: "Специјалист за репродуктивно здравје",
     location: "Скопје",
   },
   {
     img: "/src/assets/Mask1.png",
-    title: "Др. Ристе Мицев",
+    name: "Др. Ристе Мицев",
     speciality: "Гинекологија",
     description: "Гинеколог со насока кон бременост и породување",
     location: "Кочани",
@@ -130,14 +130,14 @@ export const doctors = [
   // ----- ОТОРИНОЛАРИНГОЛОГИЈА -----
   {
     img: "/src/assets/Mask2.png",
-    title: "Др. Давид Петров",
+    name: "Др. Давид Петров",
     speciality: "Оториноларингологија",
     description: "ОРЛ специјалист за уво, нос и грло",
     location: "Скопје",
   },
   {
     img: "/src/assets/Mask2.png",
-    title: "Др. Ана Илиоска",
+    name: "Др. Ана Илиоска",
     speciality: "Оториноларингологија",
     description: "Специјалист за синуси, алергии и вестибуларни нарушувања",
     location: "Гевгелија",
@@ -146,14 +146,14 @@ export const doctors = [
   // ----- ИНТЕРНА МЕДИЦИНА -----
   {
     img: "/src/assets/Mask3.png",
-    title: "Др. Кирил Митрев",
+    name: "Др. Кирил Митрев",
     speciality: "Интерна медицина",
     description: "Интернист со фокус на хронични заболувања",
     location: "Скопје",
   },
   {
     img: "/src/assets/Mask3.png",
-    title: "Др. Софија Милевска",
+    name: "Др. Софија Милевска",
     speciality: "Интерна медицина",
     description: "Специјалист по интерна медицина и дијабетологија",
     location: "Тетово",

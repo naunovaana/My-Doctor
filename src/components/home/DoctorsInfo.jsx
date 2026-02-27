@@ -1,10 +1,29 @@
 import DoctorCard from "../DoctorCard.jsx";
-import { useState } from "react";
-import { doctors } from "../../helperData/doctors.jsx";
+import { useState, useEffect } from "react";
+import { db } from "../../firebase/firebase";
+import { collection, getDocs } from "firebase/firestore";
 import { Link } from "react-router-dom";
 
 export default function DoctorsInfo() {
+  const [doctors, setDoctors] = useState([]);
   const [open, setOpen] = useState(false);
+
+  useEffect(() => {
+    const fetchDoctors = async () => {
+      try {
+        const querySnapshot = await getDocs(collection(db, "doctors"));
+        const doctorsData = querySnapshot.docs.map((doc) => ({
+          id: doc.id,
+          ...doc.data(),
+        }));
+        setDoctors(doctorsData);
+      } catch (error) {
+        console.error("Error fetching doctors:", error);
+      }
+    };
+
+    fetchDoctors();
+  }, []);
 
   function handleOpen() {
     setOpen(true);
@@ -30,18 +49,19 @@ export default function DoctorsInfo() {
       </div>
 
       <div className="flex flex-wrap py-5 justify-center gap-4 ">
-        {doctors.slice(0, 3).map((doc, index) => (
+        {doctors.slice(0, 3).map((doc) => (
           <DoctorCard
-            key={index}
-            img={doc.img}
-            title={doc.title}
+            key={doc.id}
+            photo={doc.photo || "/anonymous.jpg"} // fallback
+            name={doc.name}
             speciality={doc.speciality}
             description={doc.description}
-            location={doc.location}
+            location={doc.city} // or doc.location if you add it in Firestore
             slug={doc.slug}
           />
         ))}
       </div>
+
       <div className="px-16">
         <div className=" bg-gradient-to-r from-gradientfrom via-gradientvia to-gradientto p-10 rounded-b-3xl rounded-t-3xl">
           <div className="flex flex-col items-center pb-5">

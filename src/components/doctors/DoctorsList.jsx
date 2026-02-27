@@ -1,16 +1,40 @@
 import DoctorCard from "../DoctorCard.jsx";
-import { doctors } from "../../helperData/doctors.jsx";
+// import { doctors } from "../../helperData/doctors.jsx";
+import { useEffect, useState } from "react";
+import { collection, getDocs } from "firebase/firestore";
+import { db } from "../../firebase/firebase";
 
 export default function DoctorsList({ filters = {} }) {
+  const [doctors, setDoctors] = useState([]);
+
+  useEffect(() => {
+    const fetchDoctors = async () => {
+      try {
+        const querySnapshot = await getDocs(collection(db, "doctors"));
+
+        const doctorsData = querySnapshot.docs.map((doc) => ({
+          id: doc.id,
+          ...doc.data(),
+        }));
+
+        setDoctors(doctorsData);
+      } catch (error) {
+        console.error("Error fetching doctors:", error);
+      }
+    };
+
+    fetchDoctors();
+  }, []);
+
   const filtered = doctors.filter((d) => {
-    const name = (d.title || "").toLowerCase();
+    const name = (d.name || "").toLowerCase();
     const spec = (d.speciality || "").toLowerCase();
     const desc = (d.description || "").toLowerCase();
-    const loc = (d.location || "").toLowerCase();
+    const city = (d.city || "").toLowerCase();
 
     const search = (filters.search || "").toLowerCase();
     const specialityFilter = (filters.speciality || "").toLowerCase();
-    const locationFilter = (filters.location || "").toLowerCase();
+    const cityFilter = (filters.city || "").toLowerCase();
 
     const matchesSearch =
       !search ||
@@ -21,9 +45,9 @@ export default function DoctorsList({ filters = {} }) {
     const matchesSpeciality =
       !specialityFilter || spec.includes(specialityFilter);
 
-    const matchesLocation = !locationFilter || loc.includes(locationFilter);
+    const matchesCity = !cityFilter || city.includes(cityFilter);
 
-    return matchesSearch && matchesSpeciality && matchesLocation;
+    return matchesSearch && matchesSpeciality && matchesCity;
   });
 
   // Group by speciality
@@ -52,11 +76,11 @@ export default function DoctorsList({ filters = {} }) {
             {grouped[spec].map((doc, index) => (
               <DoctorCard
                 key={index}
-                img={doc.img}
-                title={doc.title}
+                photo={doc.photo}
+                name={doc.name}
                 speciality={doc.speciality}
                 description={doc.description}
-                location={doc.location}
+                city={doc.city}
                 slug={doc.slug}
               />
             ))}
