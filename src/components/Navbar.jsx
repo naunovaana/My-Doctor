@@ -4,11 +4,22 @@ import {
   faBars,
   faTimes,
 } from "@fortawesome/free-solid-svg-icons";
-import { useState } from "react";
 import { Link } from "react-router-dom";
+import { useEffect, useState } from "react";
+import { auth } from "../firebase/firebase";
+import { onAuthStateChanged } from "firebase/auth";
 
 export default function Navbar() {
   const [isMobileNavOpen, setIsMobileNavOpen] = useState(false);
+  const [currentUser, setCurrentUser] = useState(null);
+
+  useEffect(() => {
+    const unsubscribe = onAuthStateChanged(auth, (user) => {
+      setCurrentUser(user);
+    });
+
+    return () => unsubscribe();
+  }, []);
 
   return (
     <>
@@ -49,31 +60,23 @@ export default function Navbar() {
               </a>
             </li>
           </ul>
-          <Link
-            to="/register"
-            className="ml-6 px-5 py-2 border border-btnPrimary rounded-lg text-btnPrimary font-semibold uppercase hover:bg-btnPrimary hover:text-white transition-colors"
-          >
-            Регистрирај профил
-          </Link>
-
-          {/* Search */}
-          {/* <form
-            action="/"
-            className="hidden xl:flex items-center gap-0 w-[25%]"
-          >
-            <input
-              type="text"
-              name="search"
-              className="flex-1 px-4 py-2 rounded-l-full bg-bgPrimary text-textPrimary placeholder:text-textSecondary border border-cardBorder focus:outline-none focus:ring-1 focus:ring-btnPrimary"
-              placeholder="Пронајди доктор..."
-            />
-            <button
-              type="submit"
-              className="px-4 py-2 bg-btnPrimary hover:bg-btnPrimaryHover text-white rounded-r-full transition"
-            >
-              <FontAwesomeIcon icon={faMagnifyingGlass} />
-            </button>
-          </form> */}
+          <div className="flex items-center">
+            {!currentUser ? (
+              <Link
+                to="/register"
+                className="ml-6 px-5 py-2 border border-btnPrimary rounded-lg text-btnPrimary font-semibold uppercase hover:bg-btnPrimary hover:text-white transition-colors"
+              >
+                Регистрирај профил
+              </Link>
+            ) : (
+              <Link
+                to="/profile"
+                className="ml-6 px-5 py-2 border border-btnPrimary rounded-lg text-btnPrimary font-semibold uppercase hover:bg-btnPrimary hover:text-white transition-colors"
+              >
+                Moj Профил
+              </Link>
+            )}
+          </div>
         </div>
       </nav>
 

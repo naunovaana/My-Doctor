@@ -9,6 +9,7 @@ import DoctorDetails from "./pages/DoctorDetails.jsx";
 import Profile from "./pages/Profile.jsx";
 import Login from "./pages/Login.jsx";
 import Register from "./pages/Register.jsx";
+import ProtectedRoute from "./components/ProtectedRoute.jsx";
 
 function App() {
   return (
@@ -22,7 +23,14 @@ function App() {
             <Route path="/doctors/:slug" element={<DoctorDetails />} />
             <Route path="/blog" element={<Blog />} />
             <Route path="/about" element={<AboutUs />} />
-            <Route path="/profile" element={<Profile />} />
+            <Route
+              path="/profile"
+              element={
+                <ProtectedRoute>
+                  <Profile />
+                </ProtectedRoute>
+              }
+            />
             <Route path="/login" element={<Login />} />
             <Route path="/register" element={<Register />} />
           </Routes>
