@@ -11,6 +11,7 @@ import {
   doc,
   getDoc,
 } from "firebase/firestore";
+import AppointmentRequestForm from "../components/profile/AppointmentRequestForm";
 
 export default function DoctorDetails() {
   const { slug } = useParams();
@@ -18,6 +19,7 @@ export default function DoctorDetails() {
   const [doctor, setDoctor] = useState(null);
   const [loading, setLoading] = useState(true);
   const [userData, setUserData] = useState(null);
+  const [openRequest, setOpenRequest] = useState(false);
 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -158,6 +160,16 @@ export default function DoctorDetails() {
         </div>
       </div>
 
+      {/* Full-width Schedule Appointment Button */}
+      <div className="flex w-full my-6 justify-center">
+        <button
+          onClick={() => setOpenRequest(true)}
+          className="w-full  bg-btnPrimary text-white px-6 py-3 rounded-lg hover:bg-btnPrimaryHover transition"
+        >
+          Побарај Термин
+        </button>
+      </div>
+
       {/* 🔹 Map */}
       <div className="mt-16">
         <h2 className="text-xl font-semibold mb-4">Локација на болницата</h2>
@@ -171,6 +183,15 @@ export default function DoctorDetails() {
           )}&output=embed`}
         />
       </div>
+
+      {/* Appointment Request Form Popup */}
+      {openRequest && (
+        <AppointmentRequestForm
+          doctorId={doctor.id}
+          doctorName={doctor.name}
+          close={() => setOpenRequest(false)}
+        />
+      )}
     </section>
   );
 }

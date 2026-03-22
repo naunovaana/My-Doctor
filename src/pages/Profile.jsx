@@ -6,6 +6,7 @@ import ProfileHero from "../components/profile/ProfileHero";
 import ProfileInfo from "../components/profile/ProfileInfo";
 import SavedDoctors from "../components/profile/SavedDoctors";
 import DoctorProfileForm from "../components/profile/DoctorProfileForm";
+import DoctorAppointmentsPanel from "../components/profile/DoctorAppointmentsPanel";
 
 export default function Profile() {
   const [userData, setUserData] = useState(null);
@@ -35,7 +36,14 @@ export default function Profile() {
     <div>
       <ProfileHero />
       <ProfileInfo user={userData} />
-      {userData.role === "doctor" && <DoctorProfileForm />}
+      {userData.role === "doctor" && (
+        <>
+          <DoctorProfileForm />
+          <div className="mt-10">
+            <DoctorAppointmentsPanel doctorId={auth.currentUser.uid} />
+          </div>
+        </>
+      )}
       {userData.role === "patient" && <SavedDoctors />}
     </div>
   );
