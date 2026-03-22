@@ -1,6 +1,6 @@
 import DoctorCard from "../DoctorCard.jsx";
 import { useState, useEffect } from "react";
-import { db } from "../../firebase/firebase";
+import { db, auth } from "../../firebase/firebase";
 import { collection, getDocs } from "firebase/firestore";
 import { Link } from "react-router-dom";
 
@@ -12,10 +12,15 @@ export default function DoctorsInfo() {
     const fetchDoctors = async () => {
       try {
         const querySnapshot = await getDocs(collection(db, "doctors"));
-        const doctorsData = querySnapshot.docs.map((doc) => ({
-          id: doc.id,
-          ...doc.data(),
-        }));
+        const currentUserUid = auth.currentUser?.uid;
+
+        const doctorsData = querySnapshot.docs
+          .map((doc) => ({ id: doc.id, ...doc.data() }))
+          .filter(
+            (doctor) =>
+              doctor.profileCompleted || doctor.userId === currentUserUid,
+          );
+
         setDoctors(doctorsData);
       } catch (error) {
         console.error("Error fetching doctors:", error);
@@ -38,7 +43,7 @@ export default function DoctorsInfo() {
         <h2 className="text-3xl font-bold text-textPrimary">
           НАШИОТ ТИМ ОД СПЕЦИЈАЛИСТИ
         </h2>
-        <div className="">
+        <div>
           <Link
             to="/doctors"
             className="text-textPrimary text-sm font-semibold bg-gradient-to-r from-btnSecondary to-bgPrimary hover:from-bgPrimary hover:to-btnSecondary transition px-6 py-2 rounded-lg flex items-center gap-2"
@@ -48,22 +53,24 @@ export default function DoctorsInfo() {
         </div>
       </div>
 
-      <div className="flex flex-wrap py-5 justify-center gap-4 ">
+      <div className="flex flex-wrap py-5 justify-center gap-4">
         {doctors.slice(0, 3).map((doc) => (
           <DoctorCard
             key={doc.id}
-            photo={doc.photo || "/anonymous.jpg"} // fallback
+            photo={doc.photo || "/anonymous.jpg"}
             name={doc.name}
             speciality={doc.speciality}
             description={doc.description}
-            location={doc.city} // or doc.location if you add it in Firestore
+            location={doc.city}
             slug={doc.slug}
+            profileCompleted={doc.profileCompleted}
+            userId={doc.userId} // pass userId for badge logic
           />
         ))}
       </div>
 
       <div className="px-16">
-        <div className=" bg-gradient-to-r from-gradientfrom via-gradientvia to-gradientto p-10 rounded-b-3xl rounded-t-3xl">
+        <div className="bg-gradient-to-r from-gradientfrom via-gradientvia to-gradientto p-10 rounded-b-3xl rounded-t-3xl">
           <div className="flex flex-col items-center pb-5">
             <h3 className="text-lg font-medium tracking-widest">
               ТИ ТРЕБА СОВЕТ ОД СПЕЦИЈАЛИСТ?

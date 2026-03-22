@@ -53,8 +53,25 @@ export default function Register() {
         email: trimmedEmail,
         role,
         verified: false,
+        savedDoctors: [],
         createdAt: new Date(),
       });
+
+      if (role === "doctor") {
+        await setDoc(doc(db, "doctors", user.uid), {
+          userId: user.uid, // 🔥 connection
+          name: trimmedUsername,
+          speciality: "Неспецифицирано",
+          description: "",
+          city: "",
+          hospital: "",
+          phone: "",
+          photo: "/images/anonymous.jpg",
+          mapQuery: "",
+          slug: trimmedUsername.toLowerCase().replace(/\s+/g, "-"),
+          profileCompleted: false,
+        });
+      }
 
       // Redirect to login page
       navigate("/login");

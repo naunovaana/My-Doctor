@@ -1,8 +1,7 @@
 import DoctorCard from "../DoctorCard.jsx";
-// import { doctors } from "../../helperData/doctors.jsx";
 import { useEffect, useState } from "react";
 import { collection, getDocs } from "firebase/firestore";
-import { db } from "../../firebase/firebase";
+import { db, auth } from "../../firebase/firebase";
 
 export default function DoctorsList({ filters = {} }) {
   const [doctors, setDoctors] = useState([]);
@@ -11,11 +10,15 @@ export default function DoctorsList({ filters = {} }) {
     const fetchDoctors = async () => {
       try {
         const querySnapshot = await getDocs(collection(db, "doctors"));
+        const currentUserUid = auth.currentUser?.uid;
 
-        const doctorsData = querySnapshot.docs.map((doc) => ({
-          id: doc.id,
-          ...doc.data(),
-        }));
+        const doctorsData = querySnapshot.docs
+          .map((doc) => ({ id: doc.id, ...doc.data() }))
+          // 🔹 show only completed profiles or the doctor themselves
+          .filter(
+            (doctor) =>
+              doctor.profileCompleted || doctor.userId === currentUserUid,
+          );
 
         setDoctors(doctorsData);
       } catch (error) {
@@ -80,8 +83,10 @@ export default function DoctorsList({ filters = {} }) {
                 name={doc.name}
                 speciality={doc.speciality}
                 description={doc.description}
-                city={doc.city}
+                location={doc.city}
                 slug={doc.slug}
+                profileCompleted={doc.profileCompleted}
+                userId={doc.userId} // pass userId for badge logic
               />
             ))}
           </div>

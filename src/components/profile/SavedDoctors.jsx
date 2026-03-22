@@ -1,10 +1,75 @@
 import DoctorCard from "../DoctorCard";
-import { doctors } from "../../helperData/doctors";
-import React from "react";
+import { useEffect, useState } from "react";
+import { auth, db } from "../../firebase/firebase";
+import { doc, getDoc, collection, getDocs } from "firebase/firestore";
+import { updateDoc, arrayRemove } from "firebase/firestore";
 
 export default function SavedDoctors() {
-  // Show only 3 doctors for now
-  const sampleDoctors = doctors.slice(0, 3);
+  const [savedDoctors, setSavedDoctors] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchSavedDoctors = async () => {
+      try {
+        const user = auth.currentUser;
+        if (!user) return;
+
+        const userRef = doc(db, "users", user.uid);
+        const userSnap = await getDoc(userRef);
+
+        if (!userSnap.exists()) {
+          setSavedDoctors([]);
+          setLoading(false);
+          return;
+        }
+
+        const savedIds = userSnap.data().savedDoctors || [];
+
+        if (savedIds.length === 0) {
+          setSavedDoctors([]);
+          setLoading(false);
+          return;
+        }
+
+        const doctorsSnapshot = await getDocs(collection(db, "doctors"));
+
+        const doctorsData = doctorsSnapshot.docs
+          .map((doc) => ({
+            id: doc.id,
+            ...doc.data(),
+          }))
+          .filter((doctor) => savedIds.includes(doctor.id));
+
+        setSavedDoctors(doctorsData);
+      } catch (error) {
+        console.error("Error fetching saved doctors:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchSavedDoctors();
+  }, []);
+
+  const handleRemoveDoctor = async (doctorId) => {
+    try {
+      const user = auth.currentUser;
+      if (!user) return;
+
+      const userRef = doc(db, "users", user.uid);
+
+      await updateDoc(userRef, {
+        savedDoctors: arrayRemove(doctorId),
+      });
+
+      // 🔥 Update UI instantly (no reload)
+      setSavedDoctors((prev) => prev.filter((doc) => doc.id !== doctorId));
+    } catch (error) {
+      console.error("Error removing doctor:", error);
+    }
+  };
+
+  if (loading) return <p className="text-center mt-6">Се вчитува...</p>;
 
   return (
     <section className="max-w-screen-xl mx-auto px-4 md:px-6 lg:px-8 my-12">
@@ -12,20 +77,30 @@ export default function SavedDoctors() {
         Зачувани Доктори
       </h2>
 
-      {sampleDoctors.length === 0 ? (
+      {savedDoctors.length === 0 ? (
         <p className="text-textSecondary">Немате зачувани доктори.</p>
       ) : (
         <div className="flex flex-wrap justify-center gap-6 pt-16">
-          {sampleDoctors.map((doc) => (
-            <DoctorCard
-              key={doc.id || doc.title} // fallback if id is missing
-              img={doc.img}
-              title={doc.title}
-              speciality={doc.speciality}
-              description={doc.description}
-              location={doc.city || doc.location}
-              slug={doc.slug || "#"} // fallback if slug is missing
-            />
+          {savedDoctors.map((doc) => (
+            <div
+              key={doc.id}
+              className="w-full flex flex-col items-center gap-5"
+            >
+              <DoctorCard
+                photo={doc.photo}
+                name={doc.name}
+                speciality={doc.speciality}
+                description={doc.description}
+                location={doc.city}
+                slug={doc.slug}
+              />
+              <button
+                onClick={() => handleRemoveDoctor(doc.id)}
+                className="text-md px-4 py-2 border-2 border-cardBorder bg-cardBg rounded-lg text-red-500  hover:text-red-600 transition"
+              >
+                Отстрани доктор
+              </button>
+            </div>
           ))}
         </div>
       )}

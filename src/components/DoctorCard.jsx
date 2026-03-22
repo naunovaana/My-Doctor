@@ -1,4 +1,5 @@
 import { Link } from "react-router-dom";
+import { auth } from "../firebase/firebase";
 
 export default function DoctorCard({
   photo,
@@ -7,7 +8,12 @@ export default function DoctorCard({
   description,
   location,
   slug,
+  profileCompleted,
+  userId, // added to check ownership
 }) {
+  const currentUserUid = auth.currentUser?.uid;
+  const isOwner = userId === currentUserUid;
+
   return (
     <div className="w-full sm:w-[45%] lg:w-[30%] h-[350px] flex flex-col bg-cardBg items-center border-2 border-cardBorder rounded-xl shadow-sm transform transition-all duration-300 hover:scale-105 hover:shadow-xl">
       {/* Image */}
@@ -25,10 +31,17 @@ export default function DoctorCard({
         <p className="text-textSecondary text-sm">{description}</p>
         <p className="text-textSecondary text-sm">{location}</p>
 
+        {/* Incomplete profile badge for owner only */}
+        {!profileCompleted && isOwner && (
+          <span className="mt-2 px-3 py-1 text-xs font-semibold text-white bg-red-500 rounded-full">
+            Нецелосен профил
+          </span>
+        )}
+
         {/* Button for future doctor pages */}
         <Link
           to={`/doctors/${slug}`}
-          className="bg-btnPrimary text-white rounded-lg px-6 py-2 hover:bg-btnPrimaryHover transition"
+          className="mt-4 bg-btnPrimary text-white rounded-lg px-6 py-2 hover:bg-btnPrimaryHover transition"
         >
           Прочитај повеќе
         </Link>
