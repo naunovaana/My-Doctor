@@ -15,7 +15,7 @@ export default function DoctorCard({
   const isOwner = userId === currentUserUid;
 
   return (
-    <div className="w-full sm:w-[45%] lg:w-[30%] h-[350px] flex flex-col bg-cardBg items-center border-2 border-cardBorder rounded-xl shadow-sm transform transition-all duration-300 hover:scale-105 hover:shadow-xl">
+    <div className="w-[280px] sm:w-[300px] lg:w-[320px] h-[350px] flex flex-col bg-cardBg items-center border-2 border-cardBorder rounded-xl shadow-sm transform transition-all duration-300 hover:scale-105 hover:shadow-xl">
       {/* Image */}
       <div className="w-[200px] h-[200px] -mt-16">
         <img

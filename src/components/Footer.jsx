@@ -7,18 +7,9 @@ import {
   faGlobe,
   faLocationDot,
 } from "@fortawesome/free-solid-svg-icons";
+import { Link } from "react-router-dom";
 
 export default function Footer() {
-  const [open, setOpen] = useState(false);
-
-  function openModal() {
-    setOpen(true);
-  }
-
-  function closeModal() {
-    setOpen(false);
-  }
-
   return (
     <footer className="w-full backdrop-blur-md bg-white/60 border-t border-cardBorder mt-20">
       <div className="max-w-screen-xl mx-auto px-4 md:px-6 lg:px-8 py-16 flex flex-col items-center text-center">
@@ -31,18 +22,18 @@ export default function Footer() {
         </p>
 
         {/* Email Input */}
-        <div className="mt-8 w-full max-w-md flex items-center bg-white/80 border border-cardBorder rounded-full shadow-sm overflow-hidden backdrop-blur-sm">
+        <div className="mt-8 w-full max-w-md mx-auto flex flex-col sm:flex-row items-stretch sm:items-center bg-white/80 border border-cardBorder rounded-full shadow-sm overflow-hidden backdrop-blur-sm">
           <input
             type="email"
             placeholder="Твојата емаил адреса..."
-            className="flex-1 px-4 py-2 bg-transparent text-textPrimary focus:outline-none"
+            className="flex-1 px-4 py-3 text-textPrimary bg-transparent focus:outline-none rounded-t-full sm:rounded-l-full sm:rounded-t-none"
           />
-          <button
-            onClick={openModal}
-            className="px-6 py-2 bg-btnPrimary text-white font-semibold rounded-full hover:bg-btnPrimaryHover transition"
+          <Link
+            to="/register"
+            className="px-6 py-3 bg-btnPrimary text-white font-semibold rounded-b-full sm:rounded-r-full sm:rounded-b-none hover:bg-btnPrimaryHover transition text-center"
           >
             Регистрирај се
-          </button>
+          </Link>
         </div>
 
         {/* Social Icons */}
@@ -63,21 +54,6 @@ export default function Footer() {
           © 2025 Мој Доктор™ | All rights reserved | www.mojdoktor.mk
         </p>
       </div>
-
-      {/* Modal */}
-      {open && (
-        <div className="fixed inset-0 flex items-center justify-center bg-black/50 backdrop-blur-sm z-50">
-          <div className="relative bg-formBg rounded-xl shadow-lg p-5 w-[500px] max-w-[90%]">
-            <button
-              onClick={closeModal}
-              className="absolute top-3 right-3 bg-stone-200 text-black rounded-full w-8 h-8"
-            >
-              ✕
-            </button>
-            <RegisterForm />
-          </div>
-        </div>
-      )}
     </footer>
   );
 }

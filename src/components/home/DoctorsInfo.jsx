@@ -6,7 +6,6 @@ import { Link } from "react-router-dom";
 
 export default function DoctorsInfo() {
   const [doctors, setDoctors] = useState([]);
-  const [open, setOpen] = useState(false);
 
   useEffect(() => {
     const fetchDoctors = async () => {
@@ -30,17 +29,11 @@ export default function DoctorsInfo() {
     fetchDoctors();
   }, []);
 
-  function handleOpen() {
-    setOpen(true);
-  }
-  function closePopUp() {
-    setOpen(!open);
-  }
-
   return (
-    <section className="py-20 max-w-screen-xl mx-auto px-4 md:px-6 lg:px-8 ">
-      <div className="w-full justify-center items-center flex flex-col gap-4 pb-20">
-        <h2 className="text-3xl font-bold text-textPrimary">
+    <section className="py-20 max-w-screen-xl mx-auto px-4 md:px-6 lg:px-8">
+      {/* Header */}
+      <div className="w-full flex flex-col items-center gap-4 pb-20">
+        <h2 className="text-3xl font-bold text-textPrimary text-center">
           НАШИОТ ТИМ ОД СПЕЦИЈАЛИСТИ
         </h2>
         <div>
@@ -53,41 +46,42 @@ export default function DoctorsInfo() {
         </div>
       </div>
 
-      <div className="flex flex-wrap py-5 justify-center gap-4">
+      {/* Grid for cards */}
+      <div className="flex flex-wrap justify-center gap-20 lg:gap-20">
         {doctors.slice(0, 3).map((doc) => (
-          <DoctorCard
+          <div
             key={doc.id}
-            photo={doc.photo || "/anonymous.jpg"}
-            name={doc.name}
-            speciality={doc.speciality}
-            description={doc.description}
-            location={doc.city}
-            slug={doc.slug}
-            profileCompleted={doc.profileCompleted}
-            userId={doc.userId} // pass userId for badge logic
-          />
+            className="flex justify-center min-w-[250px] sm:min-w-[300px] md:min-w-[280px]"
+          >
+            <DoctorCard
+              photo={doc.photo || "/anonymous.jpg"}
+              name={doc.name}
+              speciality={doc.speciality}
+              description={doc.description}
+              location={doc.city}
+              slug={doc.slug}
+              profileCompleted={doc.profileCompleted}
+              userId={doc.userId}
+            />
+          </div>
         ))}
       </div>
 
-      <div className="px-16">
-        <div className="bg-gradient-to-r from-gradientfrom via-gradientvia to-gradientto p-10 rounded-b-3xl rounded-t-3xl">
-          <div className="flex flex-col items-center pb-5">
-            <h3 className="text-lg font-medium tracking-widest">
-              ТИ ТРЕБА СОВЕТ ОД СПЕЦИЈАЛИСТ?
-              <br />
-            </h3>
-            <h3 className="text-2xl font-bold tracking-wide uppercase">
-              Постави прашање на нашиот блог и добиј одговор веднаш!
-            </h3>
-          </div>
-          <div className="flex justify-center">
-            <Link
-              to={"/blog"}
-              className="text-textPrimary text-sm font-semibold bg-gradient-to-r from-btnSecondary to-bgPrimary hover:from-bgPrimary hover:to-btnSecondary transition px-6 py-2 rounded-lg flex items-center gap-2"
-            >
-              Нашиот Блог <span>➜</span>
-            </Link>
-          </div>
+      {/* CTA Section */}
+      <div className="px-4 md:px-16 mt-10">
+        <div className="bg-gradient-to-r from-gradientfrom via-gradientvia to-gradientto p-8 md:p-10 rounded-3xl text-center">
+          <h3 className="text-lg font-medium tracking-widest mb-2">
+            ТИ ТРЕБА СОВЕТ ОД СПЕЦИЈАЛИСТ?
+          </h3>
+          <h3 className="text-2xl md:text-3xl font-bold tracking-wide uppercase mb-4">
+            Постави прашање на нашиот блог и добиј одговор веднаш!
+          </h3>
+          <Link
+            to={"/blog"}
+            className="text-textPrimary text-sm md:text-base font-semibold bg-gradient-to-r from-btnSecondary to-bgPrimary hover:from-bgPrimary hover:to-btnSecondary transition px-6 py-2 rounded-lg inline-flex items-center gap-2"
+          >
+            Нашиот Блог <span>➜</span>
+          </Link>
         </div>
       </div>
     </section>

@@ -86,7 +86,9 @@ export default function DoctorAppointmentsPanel() {
                 Одбиј
               </button>
               <button
-                onClick={() => handleAction(req.id, "Понатамошна дискусија")}
+                onClick={() =>
+                  handleAction(req.id, "Пренасочено за понатамошен договор")
+                }
                 className="bg-yellow-500 text-white px-3 py-1 rounded hover:bg-yellow-600"
               >
                 Предложи нова дата/време

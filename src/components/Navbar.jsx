@@ -24,7 +24,7 @@ export default function Navbar() {
   return (
     <>
       {/* Desktop Navbar */}
-      <nav className="w-full sticky top-0 bg-navbarBg border-b border-cardBorder backdrop-blur-md z-50">
+      <nav className=" hidden md:flex w-full sticky top-0 bg-navbarBg border-b border-cardBorder backdrop-blur-md z-50">
         <div className="max-w-screen-xl mx-auto px-4 md:px-6 lg:px-8 py-3 flex items-center justify-between">
           {/* Logo */}
           <Link to="/" className="flex items-center w-[15%]">
@@ -82,7 +82,10 @@ export default function Navbar() {
 
       {/* Mobile Navbar */}
       <nav className="w-full flex items-center px-4 py-3 bg-navbarBg md:hidden sticky top-0 z-50 border-b border-cardBorder backdrop-blur-md">
-        <img src="/logo_new.png" className="w-[140px] h-auto" />
+        <Link to="/" className="">
+          <img src="/logo_new.png" className="w-[140px] h-auto" />
+        </Link>
+
         <button
           onClick={() => setIsMobileNavOpen(!isMobileNavOpen)}
           className="ml-auto"
@@ -121,18 +124,12 @@ export default function Navbar() {
               </a>
             </li>
             <li>
-              <button
-                type="button"
-                onClick={() => {
-                  document
-                    .getElementById("aboutus-section")
-                    ?.scrollIntoView({ behavior: "smooth" });
-                  setIsMobileNavOpen(false);
-                }}
+              <a
+                href="/about"
                 className="hover:text-btnPrimary transition uppercase"
               >
                 За Нас
-              </button>
+              </a>
             </li>
           </ul>
         </div>
