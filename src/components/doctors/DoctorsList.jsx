@@ -14,7 +14,6 @@ export default function DoctorsList({ filters = {} }) {
 
         const doctorsData = querySnapshot.docs
           .map((doc) => ({ id: doc.id, ...doc.data() }))
-          // 🔹 show only completed profiles or the doctor themselves
           .filter(
             (doctor) =>
               doctor.profileCompleted || doctor.userId === currentUserUid,
@@ -30,32 +29,27 @@ export default function DoctorsList({ filters = {} }) {
   }, []);
 
   const filtered = doctors.filter((d) => {
+    const search = (filters.search || "").toLowerCase();
+    const specialityFilter = (filters.speciality || "").toLowerCase();
+    const cityFilter = (filters.city || "").toLowerCase();
+
     const name = (d.name || "").toLowerCase();
     const spec = (d.speciality || "").toLowerCase();
     const desc = (d.description || "").toLowerCase();
     const city = (d.city || "").toLowerCase();
 
-    const search = (filters.search || "").toLowerCase();
-    const specialityFilter = (filters.speciality || "").toLowerCase();
-    const cityFilter = (filters.city || "").toLowerCase();
-
-    const matchesSearch =
-      !search ||
-      name.includes(search) ||
-      spec.includes(search) ||
-      desc.includes(search);
-
-    const matchesSpeciality =
-      !specialityFilter || spec.includes(specialityFilter);
-
-    const matchesCity = !cityFilter || city.includes(cityFilter);
-
-    return matchesSearch && matchesSpeciality && matchesCity;
+    return (
+      (!search ||
+        name.includes(search) ||
+        spec.includes(search) ||
+        desc.includes(search)) &&
+      (!specialityFilter || spec.includes(specialityFilter)) &&
+      (!cityFilter || city.includes(cityFilter))
+    );
   });
 
-  // Group by speciality
   const grouped = filtered.reduce((acc, doctor) => {
-    const spec = doctor.speciality;
+    const spec = doctor.speciality || "Други";
     if (!acc[spec]) acc[spec] = [];
     acc[spec].push(doctor);
     return acc;
@@ -70,15 +64,25 @@ export default function DoctorsList({ filters = {} }) {
       )}
 
       {Object.keys(grouped).map((spec) => (
-        <div key={spec} className="mb-28 flex flex-col">
-          <h2 className="text-2xl font-semibold text-textPrimary mb-24">
+        <div key={spec} className="mb-20">
+          <h2 className="text-2xl font-semibold text-textPrimary mb-10">
             {spec}
           </h2>
 
-          <div className="flex flex-wrap justify-center gap-6">
-            {grouped[spec].map((doc, index) => (
+          {/* 🔥 GRID INSTEAD OF FLEX */}
+          <div
+            className="
+              grid
+              grid-cols-1
+              sm:grid-cols-2
+              lg:grid-cols-3
+              gap-10
+              justify-items-center
+            "
+          >
+            {grouped[spec].map((doc) => (
               <DoctorCard
-                key={index}
+                key={doc.id}
                 photo={doc.photo}
                 name={doc.name}
                 speciality={doc.speciality}
@@ -86,7 +90,7 @@ export default function DoctorsList({ filters = {} }) {
                 location={doc.city}
                 slug={doc.slug}
                 profileCompleted={doc.profileCompleted}
-                userId={doc.userId} // pass userId for badge logic
+                userId={doc.userId}
               />
             ))}
           </div>

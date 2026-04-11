@@ -1,139 +1,159 @@
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import {
-  faMagnifyingGlass,
-  faBars,
-  faTimes,
-} from "@fortawesome/free-solid-svg-icons";
-import { Link } from "react-router-dom";
-import { useEffect, useState } from "react";
+import { Link, useLocation } from "react-router-dom";
 import { auth } from "../firebase/firebase";
-import { onAuthStateChanged } from "firebase/auth";
+import { signOut } from "firebase/auth";
+import { useState, useEffect } from "react";
 
 export default function Navbar() {
-  const [isMobileNavOpen, setIsMobileNavOpen] = useState(false);
-  const [currentUser, setCurrentUser] = useState(null);
+  const location = useLocation();
+  const [user, setUser] = useState(null);
+  const [menuOpen, setMenuOpen] = useState(false);
 
   useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, (user) => {
-      setCurrentUser(user);
+    const unsubscribe = auth.onAuthStateChanged((u) => {
+      setUser(u);
     });
-
     return () => unsubscribe();
   }, []);
 
+  const handleLogout = async () => {
+    await signOut(auth);
+    setMenuOpen(false);
+  };
+
+  const navLinks = [
+    { name: "ПОЧЕТНА", path: "/" },
+    { name: "ДОКТОРИ", path: "/doctors" },
+    { name: "БЛОГ", path: "/blog" },
+    { name: "ЗА НАС", path: "/about" },
+  ];
+
   return (
-    <>
-      {/* Desktop Navbar */}
-      <nav className=" hidden md:flex w-full sticky top-0 bg-navbarBg border-b border-cardBorder backdrop-blur-md z-50">
-        <div className="max-w-screen-xl mx-auto px-4 md:px-6 lg:px-8 py-3 flex items-center justify-between">
-          {/* Logo */}
-          <Link to="/" className="flex items-center w-[15%]">
-            <img src="/logo_new.png" className="w-[200px] h-auto" />
-          </Link>
-
-          {/* Navigation */}
-          <ul className="flex flex-row items-center w-[60%] justify-center space-x-14 text-navbarText text-[15px] font-semibold uppercase">
-            <li>
-              <a href="/" className="hover:text-btnPrimaryHover transition">
-                Дома
-              </a>
-            </li>
-            <li>
-              <a
-                href="/doctors"
-                className="hover:text-btnPrimaryHover transition"
-              >
-                Доктори
-              </a>
-            </li>
-            <li>
-              <a href="/blog" className="hover:text-btnPrimaryHover transition">
-                Блог
-              </a>
-            </li>
-            <li>
-              <a
-                href="/about"
-                className="hover:text-btnPrimaryHover transition"
-              >
-                За Нас
-              </a>
-            </li>
-          </ul>
-          <div className="flex items-center">
-            {!currentUser ? (
-              <Link
-                to="/register"
-                className="ml-6 px-5 py-2 border border-btnPrimary rounded-lg text-btnPrimary font-semibold uppercase hover:bg-btnPrimary hover:text-white transition-colors"
-              >
-                Регистрирај профил
-              </Link>
-            ) : (
-              <Link
-                to="/profile"
-                className="ml-6 px-5 py-2 border border-btnPrimary rounded-lg text-btnPrimary font-semibold uppercase hover:bg-btnPrimary hover:text-white transition-colors"
-              >
-                Moj Профил
-              </Link>
-            )}
-          </div>
-        </div>
-      </nav>
-
-      {/* Mobile Navbar */}
-      <nav className="w-full flex items-center px-4 py-3 bg-navbarBg md:hidden sticky top-0 z-50 border-b border-cardBorder backdrop-blur-md">
-        <Link to="/" className="">
-          <img src="/logo_new.png" className="w-[140px] h-auto" />
+    <nav className="w-full border-b border-cardBorder bg-white">
+      <div className="max-w-screen-xl mx-auto px-4 md:px-6 lg:px-8 flex justify-between items-center py-4">
+        {/* Logo */}
+        <Link to="/" className="text-xl font-bold text-textPrimary">
+          МОЈ<span className="tracking-widest font-light italic">ДОКТОР</span>
         </Link>
 
-        <button
-          onClick={() => setIsMobileNavOpen(!isMobileNavOpen)}
-          className="ml-auto"
-        >
-          <FontAwesomeIcon
-            icon={isMobileNavOpen ? faTimes : faBars}
-            className="text-2xl text-navbarText"
-          />
-        </button>
-      </nav>
+        {/* Desktop Menu */}
+        <div className="hidden md:flex items-center text-sm font-medium text-navbarText gap-6">
+          {navLinks.map((link) => {
+            const isActive = location.pathname === link.path;
 
-      {/* Mobile Drawer */}
-      {isMobileNavOpen && (
-        <div className="fixed top-0 right-0 w-3/4 sm:w-1/2 h-full bg-bgPrimary text-textPrimary shadow-xl z-50 animate-slideLeft p-6 flex flex-col space-y-6">
-          <button
-            onClick={() => setIsMobileNavOpen(false)}
-            className="self-end text-2xl text-textPrimary"
-          >
-            <FontAwesomeIcon icon={faTimes} />
-          </button>
-
-          <ul className="flex flex-col space-y-4 text-lg uppercase font-semibold">
-            <li>
-              <a href="/" className="hover:text-btnPrimary transition">
-                Дома
-              </a>
-            </li>
-            <li>
-              <a href="/doctors" className="hover:text-btnPrimary transition">
-                Доктори
-              </a>
-            </li>
-            <li>
-              <a href="/blog" className="hover:text-btnPrimary transition">
-                Блог
-              </a>
-            </li>
-            <li>
-              <a
-                href="/about"
-                className="hover:text-btnPrimary transition uppercase"
+            return (
+              <Link
+                key={link.path}
+                to={link.path}
+                className={`relative pb-1 transition-all
+                  ${
+                    isActive
+                      ? "border-b border-textPrimary"
+                      : "hover:border-b hover:border-textPrimary"
+                  }`}
               >
-                За Нас
-              </a>
-            </li>
-          </ul>
+                {link.name}
+              </Link>
+            );
+          })}
+
+          {/* Profile Link */}
+          {user && (
+            <Link
+              to="/profile"
+              className={`relative pb-1 transition-all
+                ${
+                  location.pathname === "/profile"
+                    ? "border-b border-textPrimary"
+                    : "hover:border-b hover:border-textPrimary"
+                }`}
+            >
+              МОЈ ПРОФИЛ
+            </Link>
+          )}
+
+          {/* Auth Button */}
+          {user ? (
+            <button
+              onClick={handleLogout}
+              className="bg-btnPrimary text-white px-4 py-2 rounded-lg hover:bg-btnPrimaryHover transition"
+            >
+              ОДЈАВИ СЕ
+            </button>
+          ) : (
+            <Link
+              to="/login"
+              className="bg-btnPrimary text-white px-4 py-2 rounded-lg hover:bg-btnPrimaryHover transition"
+            >
+              НАЈАВИ СЕ
+            </Link>
+          )}
+        </div>
+
+        {/* Mobile Menu Button */}
+        <button
+          className="md:hidden text-2xl"
+          onClick={() => setMenuOpen(!menuOpen)}
+        >
+          ☰
+        </button>
+      </div>
+
+      {/* Mobile Menu */}
+      {menuOpen && (
+        <div className="md:hidden flex flex-col items-center gap-4 py-4 border-t border-cardBorder">
+          {navLinks.map((link) => {
+            const isActive = location.pathname === link.path;
+
+            return (
+              <Link
+                key={link.path}
+                to={link.path}
+                onClick={() => setMenuOpen(false)}
+                className={`relative pb-1
+                  ${
+                    isActive
+                      ? "border-b border-textPrimary"
+                      : "hover:border-b hover:border-textPrimary"
+                  }`}
+              >
+                {link.name}
+              </Link>
+            );
+          })}
+
+          {user && (
+            <Link
+              to="/profile"
+              onClick={() => setMenuOpen(false)}
+              className={`relative pb-1
+                ${
+                  location.pathname === "/profile"
+                    ? "border-b border-textPrimary"
+                    : "hover:border-b hover:border-textPrimary"
+                }`}
+            >
+              МОЈ ПРОФИЛ
+            </Link>
+          )}
+
+          {user ? (
+            <button
+              onClick={handleLogout}
+              className="bg-btnPrimary text-white px-6 py-2 rounded-lg"
+            >
+              ОДЈАВИ СЕ
+            </button>
+          ) : (
+            <Link
+              to="/login"
+              onClick={() => setMenuOpen(false)}
+              className="bg-btnPrimary text-white px-6 py-2 rounded-lg"
+            >
+              НАЈАВИ СЕ
+            </Link>
+          )}
         </div>
       )}
-    </>
+    </nav>
   );
 }

@@ -80,12 +80,9 @@ export default function SavedDoctors() {
       {savedDoctors.length === 0 ? (
         <p className="text-textSecondary">Немате зачувани доктори.</p>
       ) : (
-        <div className="flex flex-wrap justify-center gap-6 pt-16">
+        <div className="flex flex-wrap justify-start gap-10 pt-16">
           {savedDoctors.map((doc) => (
-            <div
-              key={doc.id}
-              className="w-full flex flex-col items-center gap-5"
-            >
+            <div key={doc.id} className="w-[320px] flex flex-col items-center">
               <DoctorCard
                 photo={doc.photo}
                 name={doc.name}
@@ -93,10 +90,13 @@ export default function SavedDoctors() {
                 description={doc.description}
                 location={doc.city}
                 slug={doc.slug}
+                userId={doc.userId}
+                profileCompleted={doc.profileCompleted}
               />
+
               <button
                 onClick={() => handleRemoveDoctor(doc.id)}
-                className="text-md px-4 py-2 border-2 border-cardBorder bg-cardBg rounded-lg text-red-500  hover:text-red-600 transition"
+                className="mt-4 text-md px-4 py-2 border-2 border-cardBorder bg-cardBg rounded-lg text-red-500 hover:text-red-600 transition"
               >
                 Отстрани доктор
               </button>

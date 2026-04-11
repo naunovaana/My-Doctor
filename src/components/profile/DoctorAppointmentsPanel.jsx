@@ -48,7 +48,11 @@ export default function DoctorAppointmentsPanel() {
   };
 
   if (requests.length === 0)
-    return <p>Моментално нема ниту едно барање за термин.</p>;
+    return (
+      <p className="max-w-screen-xl mx-auto px-4 md:px-6 lg:px-8 my-12">
+        Моментално нема ниту едно барање за термин.
+      </p>
+    );
 
   return (
     <div className="max-w-screen-xl mx-auto px-4 md:px-6 lg:px-8 my-12">
