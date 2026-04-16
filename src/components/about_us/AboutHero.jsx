@@ -3,7 +3,7 @@ export default function AboutHero() {
     <header className="w-full bg-bgPrimary relative">
       <div className="absolute inset-0">
         <img
-          src="/src/assets/aboutus3.jpg"
+          src="/aboutus3.jpg"
           alt="About us"
           className="w-full h-full object-cover opacity-20"
         />
