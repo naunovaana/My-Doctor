@@ -117,14 +117,14 @@ export default function DoctorDetails() {
           )}
         </div>
 
-        <div className="flex flex-col md:flex-row pb-6 pt-3 gap-10 items-center justify-evenly">
+        <div className="flex flex-col md:flex-row pb-6 pt-3 px-5 gap-5 items-center justify-evenly">
           <img
             src={doctor.photo || "/images/anonymous.jpg"}
             alt={doctor.name}
             className="w-56 h-56 object-cover rounded-full"
           />
 
-          <div className="space-y-3">
+          <div className="space-y-3 md:w-[70%] sm:w-[100%]">
             <h1 className="text-3xl font-semibold">{doctor.name}</h1>
 
             <p className="text-accentBlue text-lg">{doctor.speciality}</p>
